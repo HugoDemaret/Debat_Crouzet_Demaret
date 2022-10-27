@@ -15,24 +15,47 @@ public class Argument {
     }
 
     public Argument(){
+
         this(new TreeSet<Argument>(), new TreeSet<Argument>());
     }
 
+    /**
+     * <p>Add an attack from <strong>this</strong> to <strong>given argument</strong></p>
+     * @param a
+     */
     public void addAttack(Argument a){
+
         this.attack.add(a);
     }
+
+    /**
+     * <p>Add an attacker to <strong>this</strong> from <strong>given argument</strong></p>
+     * @param a
+     */
     public void addAttacker(Argument a){
+
         this.attacker.add(a);
     }
 
+    /**
+     * @return identifier
+     */
     public int getIdentifier() {
         return identifier;
     }
 
+    /**
+     *
+     * @return attacker argument set
+     */
     public Set<Argument> getAttacker() {
         return attacker;
     }
 
+    /**
+     *
+     * @return attack argument set
+     */
     public Set<Argument> getAttack() {
         return attack;
     }
