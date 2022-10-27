@@ -41,33 +41,24 @@ public class ArgumentationFramework {
             for (Argument attacker : arg.getAttacker()){
                 if (solutionSet.containsKey(attacker)){
                     ret = !ret;
-
+                    return ret;
                 }
-                if (!ret)
-                    break;
             }
-            if (!ret)
-                break;
         }
         return ret;
     }
 
     public boolean existsDefense(){
         boolean ret = true;
-        int nbDef = 0;
         for (Argument arg : solutionSet.keySet()){
             for (Argument attacker : arg.getAttacker()){
                 for(Argument defense : solutionSet.keySet()){
                     if (!attacker.getAttacker().contains(defense)){
                         ret = !ret;
-                        break;
+                        return ret;
                     }
                 }
-                if (!ret)
-                    break;
             }
-            if (!ret)
-                break;
         }
         return ret;
     }
