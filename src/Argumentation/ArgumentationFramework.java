@@ -2,10 +2,7 @@ package Argumentation;
 
 import com.sun.source.tree.Tree;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 public class ArgumentationFramework {
     private Map<Argument,Argument> argumentSet;
@@ -26,6 +23,23 @@ public class ArgumentationFramework {
      */
     public ArgumentationFramework(){
         this(new TreeMap<>(), new TreeMap<>());
+    }
+
+    /**
+     *
+     * @param a
+     */
+    public void addArgument(Argument a){
+        argumentSet.put(a,a);
+    }
+
+    public void readContradiction(){
+        Scanner sc = new Scanner(System.in);
+        String answer;
+        answer = sc.nextLine();
+        String[] args = answer.split("A");
+        int first = Integer.parseInt(args[0]);
+        int second = Integer.parseInt(args[1]);
     }
 
     /**
@@ -99,4 +113,16 @@ public class ArgumentationFramework {
        return existsContradict && existsDef;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArgumentationFramework that = (ArgumentationFramework) o;
+        return Objects.equals(argumentSet, that.argumentSet) && Objects.equals(solutionSet, that.solutionSet);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(argumentSet, solutionSet);
+    }
 }

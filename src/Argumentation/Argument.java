@@ -1,5 +1,7 @@
 package Argumentation;
 
+import com.sun.source.tree.Tree;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -9,14 +11,18 @@ public class Argument {
     private int identifier;
     private Set<Argument> attacker, attack; //in = attacker; out = attack
 
-    public Argument(Set<Argument> in, Set<Argument> out) {
+    public Argument(int identifier, Set<Argument> in, Set<Argument> out) {
+        this.identifier = identifier;
         this.attacker = in;
         this.attack = out;
     }
 
-    public Argument(){
+    public Argument(int id){
+        this(id, new TreeSet<>(), new TreeSet<>());
+    }
 
-        this(new TreeSet<Argument>(), new TreeSet<Argument>());
+    public Argument(){
+        this(0, new TreeSet<Argument>(), new TreeSet<Argument>());
     }
 
     /**
@@ -65,11 +71,11 @@ public class Argument {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Argument argument = (Argument) o;
-        return Objects.equals(attacker, argument.attacker) && Objects.equals(attack, argument.attack);
+        return identifier == argument.identifier && Objects.equals(attacker, argument.attacker) && Objects.equals(attack, argument.attack);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(attacker, attack);
+        return Objects.hash(identifier, attacker, attack);
     }
 }
