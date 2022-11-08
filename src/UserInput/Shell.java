@@ -1,7 +1,6 @@
 package UserInput;
 
-import Argumentation.Argument;
-import Argumentation.ArgumentationFramework;
+
 
 import java.awt.*;
 import java.util.Locale;
@@ -9,7 +8,7 @@ import java.util.Scanner;
 
 public class Shell {
 
-    public static void shell(){
+    public static <ArgumentationFramework> void shell(){
         ArgumentationFramework af = new ArgumentationFramework();
         boolean ret = true;
         String quit = "quit";

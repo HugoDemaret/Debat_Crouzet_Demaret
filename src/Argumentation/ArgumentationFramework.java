@@ -102,7 +102,7 @@ public class ArgumentationFramework {
     }
 
     /**
-     * <p>This methode verifies if a proposed solution is admissible or not</p>
+     * <p>This method verifies if a proposed solution is admissible or not</p>
      * @return true if it is admissible, false otherwise
      */
     public boolean verifySolution(){
