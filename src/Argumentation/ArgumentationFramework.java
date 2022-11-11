@@ -5,15 +5,15 @@ package Argumentation;
 import java.util.*;
 
 public class ArgumentationFramework {
-    private Map<Argument,Argument> argumentSet;
-    private Map<Argument,Argument> solutionSet;
+    private Map<Integer,Argument> argumentSet;
+    private Map<Integer,Argument> solutionSet;
 
     /**
      * <p>Constructor</p>
      * @param arguments
      * @param solutions
      */
-    public ArgumentationFramework(Map<Argument,Argument> arguments, Map<Argument,Argument> solutions) {
+    public ArgumentationFramework(Map<Integer,Argument> arguments, Map<Integer,Argument> solutions) {
         this.argumentSet = arguments;
         this.solutionSet = solutions;
     }
@@ -30,7 +30,7 @@ public class ArgumentationFramework {
      * @param a
      */
     public void addArgument(Argument a){
-        argumentSet.put(a, a);
+        argumentSet.put(a.getIdentifier(), a);
     }
 
 
@@ -44,7 +44,7 @@ public class ArgumentationFramework {
      * @param b
      */
     public void addContradiction(Argument a, Argument b){
-        if(!(argumentSet.containsKey(a) || argumentSet.containsKey(b))) {
+        if(!(argumentSet.containsKey(a.getIdentifier()) || argumentSet.containsKey(b.getIdentifier()))) {
             //gestion des exceptions
             System.out.println("Error : arguments not in the set\n");
         } else {
@@ -55,22 +55,23 @@ public class ArgumentationFramework {
             attacker.add(a);
             argumentSet.put(a.getIdentifier(),attack);
             */
-            argumentSet.get(a).addAttack(b);
-            argumentSet.get(b).addAttacker(a);
+            argumentSet.get(a.getIdentifier()).addAttack(b);
+            argumentSet.get(b.getIdentifier()).addAttacker(a);
         }
     }
 
     /**
      * <p>This method verifies if a proposed solution contains contradictions</p>
+     * NOTE TO SELF : CAN BE OPTIMIZED WITH DFS/BFS
      * @return true if no contradiction exists, false otherwise
      */
     public boolean existsContradiction(){
         boolean ret = true;
-        for(Argument arg : solutionSet.keySet()){
-            for (Argument attacker : arg.getAttacker()){
-                if (solutionSet.containsKey(attacker)){
+        for(Integer arg : solutionSet.keySet()){
+            for (Argument attacker : argumentSet.get(arg).getAttacker()){
+                if (solutionSet.containsKey(attacker.getIdentifier())){
                     ret = !ret;
-                    System.out.println("There is a contradiction between Argument A" + attacker.getIdentifier() + "and Argument A" + arg.getIdentifier());
+                    System.out.println("There is a contradiction between Argument A" + attacker.getIdentifier() + " and Argument A" + arg);
                     return ret;
                 }
             }
@@ -78,23 +79,36 @@ public class ArgumentationFramework {
         return ret;
     }
 
+
+
     /***
      * <p>This method verifies if a defense relation exists for every attacked argument in the proposed solution</p>
+     * NOTE TO SELF : can be optimized with a BFS/DFS
      * @return true if a defense exists, false otherwise
      */
     public boolean existsDefense(){
         boolean ret = true;
-        for (Argument arg : solutionSet.keySet()){
-            for (Argument attacker : arg.getAttacker()){
-                for(Argument defense : solutionSet.keySet()){
-                    if (!attacker.getAttacker().contains(defense)){
-                        ret = !ret;
-                        System.out.println("Argument A" + arg.getIdentifier() + "is not defended from Argument A" + attacker.getIdentifier());
-                        return ret;
+        int sum;
+
+        for (Integer arg: solutionSet.keySet()){
+            for (Argument attacker : argumentSet.get(arg).getAttacker()){
+                sum = 0;
+                for(Integer defense : solutionSet.keySet()){
+                    //solutionSet.get(defense).getAttack().contains(attacker.getIdentifier()
+                    if (attacker.getAttacker().contains(solutionSet.get(defense))){
+                        //ret =!ret;
+                        sum++;
+                        break;
                     }
+                }
+                if (sum == 0){
+                    ret = !ret;
+                    System.out.println("Argument A" + arg + " is not defended from Argument A" + attacker.getIdentifier());
+                    return ret;
                 }
             }
         }
+
         return ret;
     }
 
@@ -103,7 +117,7 @@ public class ArgumentationFramework {
      * @param a
      */
     public void addSolution(Argument a){
-        solutionSet.put(a,a);
+        solutionSet.put(a.getIdentifier(),a);
     }
 
     /**
@@ -111,7 +125,7 @@ public class ArgumentationFramework {
      * @param a
      */
     public void removeSolution(Argument a){
-        solutionSet.remove(a);
+        solutionSet.remove(a.getIdentifier());
     }
 
     public void removeSolution(){
@@ -138,8 +152,8 @@ public class ArgumentationFramework {
         //System.out.println(args[1] + args[2]);
         int first = Integer.parseInt(args[1]);
         int second = Integer.parseInt(args[2]);
-        Argument a = new Argument(first);
-        Argument b = new Argument(second);
+        Argument a = argumentSet.get(first);
+        Argument b = argumentSet.get(second);
         addContradiction(a,b);
         //scanner.close();
     }
@@ -154,7 +168,7 @@ public class ArgumentationFramework {
         answer = scanner.nextLine();
         String[] args = answer.split("A");
         int first = Integer.parseInt(args[1]);
-        Argument a = new Argument(first);
+        Argument a = argumentSet.get(first);
         addSolution(a);
         //scanner.close();
     }
