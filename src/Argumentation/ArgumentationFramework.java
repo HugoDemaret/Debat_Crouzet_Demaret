@@ -1,6 +1,6 @@
 package Argumentation;
 
-import com.sun.source.tree.Tree;
+
 
 import java.util.*;
 
@@ -30,7 +30,7 @@ public class ArgumentationFramework {
      * @param a
      */
     public void addArgument(Argument a){
-        argumentSet.put(a,a);
+        argumentSet.put(a, a);
     }
 
     public void readContradiction(){
