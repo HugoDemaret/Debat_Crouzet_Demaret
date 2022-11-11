@@ -22,7 +22,7 @@ public class ArgumentationFramework {
      * <p>Empty constructor</p>
      */
     public ArgumentationFramework(){
-        this(new TreeMap<>(), new TreeMap<>());
+        this(new HashMap<>(), new HashMap<>());
     }
 
     /**
@@ -33,14 +33,7 @@ public class ArgumentationFramework {
         argumentSet.put(a, a);
     }
 
-    public void readContradiction(){
-        Scanner sc = new Scanner(System.in);
-        String answer;
-        answer = sc.nextLine();
-        String[] args = answer.split("A");
-        int first = Integer.parseInt(args[0]);
-        int second = Integer.parseInt(args[1]);
-    }
+
 
     /**
      * <p>
@@ -55,13 +48,15 @@ public class ArgumentationFramework {
             //gestion des exceptions
             System.out.println("Error : arguments not in the set\n");
         } else {
-            Argument tmp1,tmp2;
-            tmp1 = argumentSet.get(a);
-            tmp1.addAttack(b);
-            tmp2 = argumentSet.get(b);
-            tmp2.addAttacker(a);
-            argumentSet.put(tmp1,tmp1);
-            argumentSet.put(tmp2,tmp2);
+            /*
+            Set<Argument> attack = argumentSet.get(a.getIdentifier()).getAttack();
+            Set<Argument> attacker = argumentSet.get(b.getIdentifier()).getAttacker();
+            attack.add(b);
+            attacker.add(a);
+            argumentSet.put(a.getIdentifier(),attack);
+            */
+            argumentSet.get(a).addAttack(b);
+            argumentSet.get(b).addAttacker(a);
         }
     }
 
@@ -75,6 +70,7 @@ public class ArgumentationFramework {
             for (Argument attacker : arg.getAttacker()){
                 if (solutionSet.containsKey(attacker)){
                     ret = !ret;
+                    System.out.println("There is a contradiction between Argument A" + attacker.getIdentifier() + "and Argument A" + arg.getIdentifier());
                     return ret;
                 }
             }
@@ -93,6 +89,7 @@ public class ArgumentationFramework {
                 for(Argument defense : solutionSet.keySet()){
                     if (!attacker.getAttacker().contains(defense)){
                         ret = !ret;
+                        System.out.println("Argument A" + arg.getIdentifier() + "is not defended from Argument A" + attacker.getIdentifier());
                         return ret;
                     }
                 }
@@ -102,13 +99,74 @@ public class ArgumentationFramework {
     }
 
     /**
+     * <p>Adds a proposed solution to the solution set</p>
+     * @param a
+     */
+    public void addSolution(Argument a){
+        solutionSet.put(a,a);
+    }
+
+    /**
+     * <p>Removes a given argument from the user proposed solution</p>
+     * @param a
+     */
+    public void removeSolution(Argument a){
+        solutionSet.remove(a);
+    }
+
+    public void removeSolution(){
+        System.out.println("Enter the contradiction in the form A1");
+        Scanner scanner = new Scanner(System.in);
+        String answer;
+        answer = scanner.nextLine();
+        String[] args = answer.split("A");
+        int first = Integer.parseInt(args[1]);
+        Argument a = new Argument(first);
+        removeSolution(a);
+        //scanner.close();
+    }
+
+    /**
+     * <p>Reads a user proposed contradiction between two arguments, and add a contradiction between said arguments</p>
+     */
+    public void readContradiction(){
+        System.out.println("Enter the contradiction in the form A1A2");
+        Scanner scanner = new Scanner(System.in);
+        String answer;
+        answer = scanner.nextLine();
+        String[] args = answer.split("A");
+        //System.out.println(args[1] + args[2]);
+        int first = Integer.parseInt(args[1]);
+        int second = Integer.parseInt(args[2]);
+        Argument a = new Argument(first);
+        Argument b = new Argument(second);
+        addContradiction(a,b);
+        //scanner.close();
+    }
+
+    /**
+     * <p>Reads a user proposed solution from System.in, and adds it to the set of solutions</p>
+     */
+    public void readSolution(){
+        System.out.println("Enter argument in the form A1");
+        Scanner scanner = new Scanner(System.in);
+        String answer;
+        answer = scanner.nextLine();
+        String[] args = answer.split("A");
+        int first = Integer.parseInt(args[1]);
+        Argument a = new Argument(first);
+        addSolution(a);
+        //scanner.close();
+    }
+
+    /**
      * <p>This method verifies if a proposed solution is admissible or not</p>
      * @return true if it is admissible, false otherwise
      */
     public boolean verifySolution(){
        boolean existsDef = true, existsContradict = true;
        existsContradict = existsContradiction();
-       if (!existsContradict)
+       if (existsContradict)
            existsDef = existsDefense();
        return existsContradict && existsDef;
     }

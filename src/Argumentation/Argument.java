@@ -2,6 +2,7 @@ package Argumentation;
 
 
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -17,11 +18,11 @@ public class Argument {
     }
 
     public Argument(int id){
-        this(id, new TreeSet<>(), new TreeSet<>());
+        this(id, new HashSet<>(), new HashSet<>());
     }
 
     public Argument(){
-        this(0, new TreeSet<Argument>(), new TreeSet<Argument>());
+        this(0, new HashSet<Argument>(), new HashSet<>());
     }
 
     /**
@@ -70,11 +71,11 @@ public class Argument {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Argument argument = (Argument) o;
-        return identifier == argument.identifier && Objects.equals(attacker, argument.attacker) && Objects.equals(attack, argument.attack);
+        return identifier == argument.identifier;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(identifier, attacker, attack);
+        return Objects.hash(identifier);
     }
 }
