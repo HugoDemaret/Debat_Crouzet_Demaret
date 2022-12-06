@@ -7,73 +7,33 @@ import java.util.*;
 public class ArgumentationFramework {
     private Map<Integer,Argument> argumentSet;
     private Map<Integer,Argument> solutionSet;
-    private Set<Set<Argument>> admissibleSet;
-    private Set<Set<Argument>> preferedSet;
+    private ArgumentationSet admissibleSet;
+    private ArgumentationSet preferedSet;
 
 
-    /**
-     * <p>This class extends TreeSet in order to be easier to use, but also faster.
-     * It allows to compare two TreeSets of arguments between one another
-     * It implements a hash value
-     * </p>
-     */
-    protected class ArgumentationSet extends TreeSet<Argument> implements Comparable<ArgumentationSet>{
-
-        private int hash;
-
-        /**
-         * <p>The hash value is the sum of all argument's identifier</p>
-         * @return int : the hash value
-         */
-        public int getHash(){
-            return hash;
-        }
-
-        /**
-         * <p>Adds an argument to ArgumentSet. Increments the hash by the argument's identifie</p>
-         * @param argument
-         * @return
-         */
-        @Override
-        public boolean add(Argument argument) {
-            hash+=argument.getIdentifier();
-            return super.add(argument);
-        }
-
-        /**
-         * <p>Allows for comparison between two TreeSets of Arguments</p>
-         * @param o the argument to be compared to this
-         * @return -1 if this is smaller, 0 if equals, 1 if larger
-         */
-        @Override
-        public int compareTo(ArgumentationSet o) {
-            if (this.size() < o.size())
-                return -1;
-            else if (this.size() > o.size())
-                return 1;
-            if (this.hash < o.hash)
-                return -1;
-            else if (this.hash > o.hash)
-                return 1;
-            else return 0;
-        }
-    }
 
     /**
      * <p>Constructor</p>
      * @param arguments
      * @param solutions
      */
-    public ArgumentationFramework(Map<Integer,Argument> arguments, Map<Integer,Argument> solutions) {
+    public ArgumentationFramework(
+            Map<Integer,Argument> arguments,
+            Map<Integer,Argument> solutions,
+            ArgumentationSet preferedSet,
+            ArgumentationSet admissibleSet
+    ) {
         this.argumentSet = arguments;
         this.solutionSet = solutions;
+        this.preferedSet = preferedSet;
+        this.admissibleSet = admissibleSet;
     }
 
     /**
      * <p>Empty constructor</p>
      */
     public ArgumentationFramework(){
-        this(new HashMap<>(), new HashMap<>());
+        this(new HashMap<>(), new HashMap<>(), new ArgumentationSet(), new ArgumentationSet());
     }
 
     /**
@@ -241,9 +201,10 @@ public class ArgumentationFramework {
         return result;
     }
 
-public Set<Set<Argument>> getSubset(){
-        Set<Set<Argument>> subsets;
-        subsets = new TreeSet<Set<Argument>>();
+    public ArgumentationSet getSubset(){
+            ArgumentationSet subsets;
+            subsets = new ArgumentationSet();
+            return subsets;
     }
 
     public void constructAdmissible(){
