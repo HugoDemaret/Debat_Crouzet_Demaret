@@ -70,12 +70,12 @@ public class Shell {
                     af.removeSolution();
                     break;
                 case "3":
-                    res = af.verifySolution();
+                    res = af.verifySolution(true);
                     System.out.println("Resultat : " + res);
                     break;
                 case "4": case "quit":
                     ret = !ret;
-                    res = af.verifySolution();
+                    res = af.verifySolution(true);
                     System.out.println("Resultat : " + res);
                     break;
                 default:

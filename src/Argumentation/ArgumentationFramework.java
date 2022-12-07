@@ -5,10 +5,10 @@ package Argumentation;
 import java.util.*;
 
 public class ArgumentationFramework {
-    private Map<Integer,Argument> argumentSet;
+    private Map<Integer, Argument> argumentSet;
     private Map<Integer,Argument> solutionSet;
-    private ArgumentationSet admissibleSet;
-    private ArgumentationSet preferedSet;
+    private Set<ArgumentationSet> admissibleSets;
+    private Set<ArgumentationSet> preferedSets;
 
 
 
@@ -20,13 +20,13 @@ public class ArgumentationFramework {
     public ArgumentationFramework(
             Map<Integer,Argument> arguments,
             Map<Integer,Argument> solutions,
-            ArgumentationSet preferedSet,
-            ArgumentationSet admissibleSet
+            Set<ArgumentationSet> preferedSet,
+            Set<ArgumentationSet> admissibleSet
     ) {
         this.argumentSet = arguments;
         this.solutionSet = solutions;
-        this.preferedSet = preferedSet;
-        this.admissibleSet = admissibleSet;
+        this.preferedSets = preferedSet;
+        this.admissibleSets = admissibleSet;
     }
 
     /**
@@ -76,13 +76,14 @@ public class ArgumentationFramework {
      * NOTE TO SELF : CAN BE OPTIMIZED WITH DFS/BFS
      * @return true if no contradiction exists, false otherwise
      */
-    public boolean existsContradiction(){
+    public boolean existsContradiction(boolean mode){
         boolean ret = true;
         for(Integer arg : solutionSet.keySet()){
             for (Argument attacker : argumentSet.get(arg).getAttacker()){
                 if (solutionSet.containsKey(attacker.getIdentifier())){
                     ret = !ret;
-                    System.out.println("There is a contradiction between Argument A" + attacker.getIdentifier() + " and Argument A" + arg);
+                    if (mode)
+                        System.out.println("There is a contradiction between Argument A" + attacker.getIdentifier() + " and Argument A" + arg);
                     return ret;
                 }
             }
@@ -97,7 +98,7 @@ public class ArgumentationFramework {
      * NOTE TO SELF : can be optimized with a BFS/DFS
      * @return true if a defense exists, false otherwise
      */
-    public boolean existsDefense(){
+    public boolean existsDefense(boolean mode){
         boolean ret = true;
         int sum;
 
@@ -114,7 +115,8 @@ public class ArgumentationFramework {
                 }
                 if (sum == 0){
                     ret = !ret;
-                    System.out.println("Argument A" + arg + " is not defended from Argument A" + attacker.getIdentifier());
+                    if (mode)
+                        System.out.println("Argument A" + arg + " is not defended from Argument A" + attacker.getIdentifier());
                     return ret;
                 }
             }
@@ -122,6 +124,8 @@ public class ArgumentationFramework {
 
         return ret;
     }
+
+
 
     /**
      * <p>Adds a proposed solution to the solution set</p>
@@ -188,33 +192,49 @@ public class ArgumentationFramework {
      * <p>This method verifies if a proposed solution is admissible or not</p>
      * @return true if it is admissible, false otherwise
      */
-    public boolean verifySolution(){
+    public boolean verifySolution(boolean mode){
        boolean existsDef = true, existsContradict = true;
-       existsContradict = existsContradiction();
+       existsContradict = existsContradiction(mode);
        if (existsContradict)
-           existsDef = existsDefense();
+           existsDef = existsDefense(mode);
        return existsContradict && existsDef;
     }
 
-    public boolean isPrefered(){
-        boolean result = true;
-        return result;
-    }
 
+
+    /**
+     *
+     * @return
+     */
     public ArgumentationSet getSubset(){
             ArgumentationSet subsets;
             subsets = new ArgumentationSet();
             return subsets;
     }
 
+    /**
+     *
+     */
     public void constructAdmissible(){
-        for (int i = 0 ; i < (1<<argumentSet.size()); ++i){
-
+        ArgumentationSet argSet = new ArgumentationSet();
+        for (Map.Entry<Integer, Argument> key_value : argumentSet.entrySet()){
+            argSet.add(key_value.getValue());
+            if (!argSet.isAdmissible(true)){
+                argSet.remove(key_value.getValue());
+            }
         }
+
     }
 
+    /**
+     *
+     */
     public void constructPrefered(){
-
+        for (ArgumentationSet argSet : admissibleSets){
+            if (argSet.isPrefered(argumentSet)){
+                preferedSets.add(argSet);
+            }
+        }
     }
 
 
