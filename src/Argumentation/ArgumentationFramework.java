@@ -2,6 +2,8 @@ package Argumentation;
 
 
 
+import UserInput.InputReader;
+
 import java.util.*;
 
 public class ArgumentationFramework {
@@ -33,7 +35,7 @@ public class ArgumentationFramework {
      * <p>Empty constructor</p>
      */
     public ArgumentationFramework(){
-        this(new HashMap<>(), new HashMap<>(), new ArgumentationSet(), new ArgumentationSet());
+        this(new HashMap<>(), new HashMap<>(), new TreeSet<>(), new TreeSet<>());
     }
 
     /**
@@ -145,9 +147,8 @@ public class ArgumentationFramework {
 
     public void removeSolution(){
         System.out.println("Enter the contradiction in the form A1");
-        Scanner scanner = new Scanner(System.in);
         String answer;
-        answer = scanner.nextLine();
+        answer = InputReader.scanner.nextLine();
         String[] args = answer.split("A");
         int first = Integer.parseInt(args[1]);
         Argument a = new Argument(first);
@@ -160,9 +161,8 @@ public class ArgumentationFramework {
      */
     public void readContradiction(){
         System.out.println("Enter the contradiction in the form A1A2");
-        Scanner scanner = new Scanner(System.in);
         String answer;
-        answer = scanner.nextLine();
+        answer = InputReader.scanner.nextLine();
         String[] args = answer.split("A");
         //System.out.println(args[1] + args[2]);
         int first = Integer.parseInt(args[1]);

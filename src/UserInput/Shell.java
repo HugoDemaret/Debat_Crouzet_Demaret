@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.Map;
 
+
 public class Shell {
 
     public static void shell(){
@@ -17,11 +18,10 @@ public class Shell {
         ArgumentationFramework af = new ArgumentationFramework();
         boolean ret = true;
         String quit = "quit";
-        Scanner sc = new Scanner(System.in);
         int n;
-        n = sc.nextInt();
+        n = InputReader.scanner.nextInt();
         //to remove the \n of nextInt()
-        sc.nextLine();
+        InputReader.scanner.nextLine();
         System.out.println("The number of arguments is : " + n);
 
         for(int i = 1; i<n+1; ++i){
@@ -35,7 +35,7 @@ public class Shell {
             System.out.println("2 | quit : quit");
 
 
-            answer = sc.nextLine();
+            answer = InputReader.scanner.nextLine();
 
             switch (answer.toLowerCase()){
                 case "quit":
@@ -60,7 +60,7 @@ public class Shell {
             System.out.println("2 : remove an argument from the solution (single integer)");
             System.out.println("3 : verifies if the solution is admissible");
             System.out.println("4 | quit : quit");
-            answer = sc.nextLine();
+            answer = InputReader.scanner.nextLine();
             boolean res;
             switch (answer.toLowerCase()){
                 case "1":
@@ -85,7 +85,7 @@ public class Shell {
         }
 
 
-        sc.close();
+        InputReader.scanner.close();
     }
 
 
