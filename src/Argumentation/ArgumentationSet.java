@@ -37,40 +37,12 @@ public class ArgumentationSet extends TreeSet<Argument> implements Comparable<Ar
         return hash;
     }
 
-    public boolean isContradicted(boolean mode){
-        boolean ret = true;
-        return ret;
-    }
 
-    public boolean isDefended(boolean mode){
-        boolean ret = true;
-        return ret;
-    }
+
+
 
     /**
-     *
-     * @param mode
-     * @return
-     */
-    public boolean isAdmissible(boolean mode){
-        boolean existsDef = true, existsContradict = true;
-        existsContradict = isContradicted(mode);
-        if (existsContradict)
-            existsDef = isDefended(mode);
-        return existsContradict && existsDef;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isPrefered(Map<Integer, Argument> argumentMap){
-        boolean result = true;
-        return result;
-    }
-
-    /**
-     * <p>Adds an argument to ArgumentSet. Increments the hash by the argument's identifie</p>
+     * <p>Adds an argument to ArgumentSet. Increments the hash by the argument's identifier</p>
      * @param argument
      * @return
      */

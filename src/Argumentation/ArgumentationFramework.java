@@ -201,37 +201,85 @@ public class ArgumentationFramework {
     }
 
 
+    public boolean isContradicted(ArgumentationSet arguments){
+        for (Argument argument : arguments){
+            for (Argument attacker : argument.getAttacker()){
+                if (arguments.contains(attacker))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isDefended(ArgumentationSet arguments){
+        boolean ret = true;
+        int sum;
+        for (Argument argument : arguments){
+            for (Argument attacker : argument.getAttacker()){
+                sum = 0;
+                for(Argument defense : arguments){
+                    //solutionSet.get(defense).getAttack().contains(attacker.getIdentifier()
+                    if (attacker.getAttacker().contains(defense)){
+                        //ret =!ret;
+                        sum++;
+                        break;
+                    }
+                }
+                if (sum == 0) return false;
+            }
+        }
+        return true;
+    }
 
     /**
      *
      * @return
      */
-    public ArgumentationSet getSubset(){
-            ArgumentationSet subsets;
-            subsets = new ArgumentationSet();
-            return subsets;
+    public boolean isPrefered(){
+        boolean result = true;
+        return result;
     }
+
+    /**
+     *
+     * @param mode
+     * @return
+     */
+    public boolean isAdmissible(ArgumentationSet arguments){
+        boolean existsDef = true, existsContradict = true;
+        existsContradict = isContradicted(arguments);
+        if (existsContradict)
+            existsDef = isDefended(arguments);
+        return existsContradict && existsDef;
+    }
+
+
 
     /**
      *
      */
     public void constructAdmissible(){
-        ArgumentationSet argSet = new ArgumentationSet();
-        for (Map.Entry<Integer, Argument> key_value : argumentSet.entrySet()){
-            argSet.add(key_value.getValue());
-            if (!argSet.isAdmissible(true)){
-                argSet.remove(key_value.getValue());
+        admissibleSets.clear();
+        List<Argument> list = new ArrayList<Argument>(argumentSet.values());
+        int n = list.size();
+        preferedSets.add(new ArgumentationSet());
+        for (int i = 0; i< (1<<n); ++i){
+            ArgumentationSet arguments = new ArgumentationSet();
+            for (int j = 0; j<n;++j){
+                if (((i>>j) &1)==1) arguments.add(list.get(j));
             }
+            if (isAdmissible(arguments))
+                admissibleSets.add(arguments);
         }
-
     }
 
     /**
      *
      */
     public void constructPrefered(){
+        preferedSets.clear();
         for (ArgumentationSet argSet : admissibleSets){
-            if (argSet.isPrefered(argumentSet)){
+            if (isPrefered(argSet)){
                 preferedSets.add(argSet);
             }
         }

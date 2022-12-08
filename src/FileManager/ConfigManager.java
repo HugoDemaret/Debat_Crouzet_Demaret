@@ -11,7 +11,7 @@ public class ConfigManager {
     private static final String path = "../../config/configuration.conf";
 
 
-    private static ConfigManager configManager = new ConfigManager();
+    public static ConfigManager configManager = new ConfigManager();
 
     /**
      * <p>Only one instance of this, initializes the values to true by default (in case of failure)</p>
@@ -22,7 +22,7 @@ public class ConfigManager {
     }
 
     /**
-     * <p>Gets the instance if this</p>
+     * <p>Gets the instance of this</p>
      * @return this
      */
     public ConfigManager getInstance(){
