@@ -31,6 +31,8 @@ public class ArgumentationFramework {
         this.admissibleSets = admissibleSet;
     }
 
+
+
     /**
      * <p>Empty constructor</p>
      */
@@ -45,16 +47,52 @@ public class ArgumentationFramework {
     public void addArgument(Argument a){
         argumentSet.put(a.getIdentifier(), a);
     }
-
-
+    /**
+     * <p>
+     *     the first parameter (a) attacks the second (b). This method modifies these arguments attacker and attack
+     *     attributes so they contain the new values
+     * </p>
+     * @param a (int)
+     * @param b (int)
+     */
+    public void addContradiction(int a, int b){
+        if(!(argumentSet.containsKey(a) && argumentSet.containsKey(b))) {
+            //gestion des exceptions
+            System.out.println("Error : arguments not in the set\n");
+        } else {
+            /*
+            Set<Argument> attack = argumentSet.get(a.getIdentifier()).getAttack();
+            Set<Argument> attacker = argumentSet.get(b.getIdentifier()).getAttacker();
+            attack.add(b);
+            attacker.add(a);
+            argumentSet.put(a.getIdentifier(),attack);
+            */
+            argumentSet.get(a).addAttack(argumentSet.get(b));
+            argumentSet.get(b).addAttacker(argumentSet.get(a));
+        }
+    }
+    /**
+     * <p>
+     *     the first parameter (a) attacks the second (b). This method modifies these arguments attacker and attack
+     *     attributes so they contain the new values
+     * </p>
+     * @param a (String)
+     * @param b (String)
+     */
+    public void addContradiction(String a, String b){
+        int A, B;
+        A = Integer.parseInt(a.replaceAll("[\\D]",""));
+        B = Integer.parseInt(b.replaceAll("[\\D]",""));
+        addContradiction(A,B);
+    }
 
     /**
      * <p>
      *     the first parameter (a) attacks the second (b). This method modifies these arguments attacker and attack
      *     attributes so they contain the new values
      * </p>
-     * @param a
-     * @param b
+     * @param a (Argument)
+     * @param b (Argument)
      */
     public void addContradiction(Argument a, Argument b){
         if(!(argumentSet.containsKey(a.getIdentifier()) && argumentSet.containsKey(b.getIdentifier()))) {
@@ -202,13 +240,14 @@ public class ArgumentationFramework {
 
 
     public boolean isContradicted(ArgumentationSet arguments){
+        boolean ret = true;
         for (Argument argument : arguments){
             for (Argument attacker : argument.getAttacker()){
                 if (arguments.contains(attacker))
-                    return true;
+                    return !ret;
             }
         }
-        return false;
+        return ret;
     }
 
     public boolean isDefended(ArgumentationSet arguments){
@@ -225,24 +264,23 @@ public class ArgumentationFramework {
                         break;
                     }
                 }
-                if (sum == 0) return false;
+                if (sum == 0)
+                    return !ret;
             }
         }
-        return true;
+        return ret;
+    }
+
+    public void clear(){
+        solutionSet.clear();
+        admissibleSets.clear();
+        argumentSet.clear();
+        preferedSets.clear();
     }
 
     /**
      *
-     * @return
-     */
-    public boolean isPrefered(){
-        boolean result = true;
-        return result;
-    }
-
-    /**
-     *
-     * @param mode
+     * @param arguments
      * @return
      */
     public boolean isAdmissible(ArgumentationSet arguments){
@@ -252,6 +290,7 @@ public class ArgumentationFramework {
             existsDef = isDefended(arguments);
         return existsContradict && existsDef;
     }
+
 
 
 
@@ -278,13 +317,39 @@ public class ArgumentationFramework {
      */
     public void constructPrefered(){
         preferedSets.clear();
-        for (ArgumentationSet argSet : admissibleSets){
-            if (isPrefered(argSet)){
-                preferedSets.add(argSet);
+        for (ArgumentationSet subSet : admissibleSets){
+            boolean isSubSet = true;
+            if (!subSet.isEmpty()) {
+                for (ArgumentationSet argSet : admissibleSets) {
+                    if (subSet.isSmallerSubset(argSet))
+                        isSubSet = false;
+                }
+                if (isSubSet) preferedSets.add(subSet);
             }
         }
     }
 
+    public void printAdmissible(){
+        StringBuilder st = new StringBuilder();
+        st.append("Admissible sets : \n");
+
+        for (ArgumentationSet argset : admissibleSets){
+            st.append(argset.toString());
+            st.append("\n");
+        }
+
+        System.out.println(st.toString());
+    }
+
+    public void printPrefered(){
+        StringBuilder st = new StringBuilder();
+        st.append("Prefered sets : \n");
+        for (ArgumentationSet argset : preferedSets){
+            st.append(argset.toString());
+            st.append("\n");
+        }
+        System.out.println(st.toString());
+    }
 
     /**
      *

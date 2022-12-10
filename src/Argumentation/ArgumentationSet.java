@@ -37,9 +37,26 @@ public class ArgumentationSet extends TreeSet<Argument> implements Comparable<Ar
         return hash;
     }
 
+    @Override
+    public String toString(){
+        StringBuilder st = new StringBuilder();
+        for (Argument arg : this){
+            st.append(arg.toString());
+            st.append(",");
+        }
+        return st.toString();
+    }
 
-
-
+    /**
+     * <p></p>
+     * @param arguments
+     * @return
+     */
+    public boolean isSmallerSubset(ArgumentationSet arguments){
+        if (this.size() > arguments.size()) return false;
+        if (this.equals(arguments)) return false;
+        return arguments.containsAll(this);
+    }
 
     /**
      * <p>Adds an argument to ArgumentSet. Increments the hash by the argument's identifier</p>
