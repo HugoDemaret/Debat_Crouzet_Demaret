@@ -299,7 +299,7 @@ public class ArgumentationFramework {
      */
     //One could optimise this part. Though it is mandatory to test 2^n sets, we can infer that if a set {a,b} contradicts itself, then {a,b,c} also does
     //with that in our head, one could memoise (cache) the previously tested set that contains (at least) a contradiction, and test accordingly. This would reduce the
-    //time complexity by -O(n^2). Verifying if a set is a subset is in O(n), but with somes tricks (hash), one could do it in O(1) in average (O(n) worst case, still)
+    //time complexity by -O(n^2). Verifying if a set is a subset is in O(n), but with some tricks (hash), one could do it in O(1) in average (O(n) worst case, still)
     public void constructAdmissible(){
         admissibleSets.clear();
         List<Argument> list = new ArrayList<Argument>(argumentSet.values());
