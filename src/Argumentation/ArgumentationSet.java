@@ -65,8 +65,17 @@ public class ArgumentationSet extends TreeSet<Argument> implements Comparable<Ar
      */
     @Override
     public boolean add(Argument argument) {
+        //OOPS, this could be used to increment the hash indefinitely, even though the arg is already inside ! :c
+        /*
         hash+=argument.getIdentifier();
         return super.add(argument);
+        */
+        //PATCH : 
+        boolean valid = super.add(argument);
+        if (!valid)
+            return valid;
+        hash+= argument.getIdentifier();
+        return valid;
     }
 
     /**
