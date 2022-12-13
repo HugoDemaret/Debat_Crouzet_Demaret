@@ -32,7 +32,7 @@ public class Argument implements Comparable<Argument>{
     }
 
     /**
-     * <p>Add an attack from <strong>this</strong> to <strong>given argument</strong></p>
+     * <p>Adds an attack from <strong>this</strong> to <strong>given argument</strong></p>
      * @param a
      */
     public void addAttack(Argument a){
@@ -40,6 +40,10 @@ public class Argument implements Comparable<Argument>{
         this.attack.add(a);
     }
 
+    /**
+     * <p>Classic to string</p>
+     * @return string
+     */
     @Override
     public String toString(){
         StringBuilder st = new StringBuilder();
@@ -52,7 +56,7 @@ public class Argument implements Comparable<Argument>{
     }
 
     /**
-     * <p>Add an attacker to <strong>this</strong> from <strong>given argument</strong></p>
+     * <p>Adds an attacker to <strong>this</strong> from <strong>given argument</strong></p>
      * @param a
      */
     public void addAttacker(Argument a){
@@ -60,8 +64,16 @@ public class Argument implements Comparable<Argument>{
         this.attacker.add(a);
     }
 
+    /**
+     * <p>Gets the argument's name</p>
+     * @return name
+     */
+    public String getName(){
+        return this.name;
+    }
 
     /**
+     * <p>Gets the argument's identifier</p>
      * @return identifier
      */
     public int getIdentifier() {
@@ -69,7 +81,7 @@ public class Argument implements Comparable<Argument>{
     }
 
     /**
-     *
+     *<p>Gets the attackers set</p>
      * @return attacker argument set
      */
     public Set<Argument> getAttacker() {
@@ -77,13 +89,19 @@ public class Argument implements Comparable<Argument>{
     }
 
     /**
-     *
+     * <p>Gets the attacks set</p>
      * @return attack argument set
      */
     public Set<Argument> getAttack() {
         return attack;
     }
 
+
+    /**
+     * <p>Checks whether to arguments are the same or not</p>
+     * @param o
+     * @return true if they are, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,15 +110,19 @@ public class Argument implements Comparable<Argument>{
         return identifier == argument.identifier;
     }
 
+    /**
+     * <p>Computes the hash value of this</p>
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(identifier);
     }
 
     /**
-     * <p></p>
+     * <p>Compares two arguments</p>
      * @param o
-     * @return
+     * @return +int if larger, -int if smaller, 0 otherwise
      */
     @Override
     public int compareTo(Argument o) {

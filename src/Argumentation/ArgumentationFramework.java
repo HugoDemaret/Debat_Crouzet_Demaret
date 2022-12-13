@@ -11,6 +11,7 @@ public class ArgumentationFramework {
     private Map<Integer,Argument> solutionSet;
     private Set<ArgumentationSet> admissibleSets;
     private Set<ArgumentationSet> preferedSets;
+    private Map<String, Integer> dictionnary; //name of the argument to its identifier
 
 
 
@@ -23,12 +24,14 @@ public class ArgumentationFramework {
             Map<Integer,Argument> arguments,
             Map<Integer,Argument> solutions,
             Set<ArgumentationSet> preferedSet,
-            Set<ArgumentationSet> admissibleSet
+            Set<ArgumentationSet> admissibleSet,
+            Map<String,Integer> dictionnary
     ) {
         this.argumentSet = arguments;
         this.solutionSet = solutions;
         this.preferedSets = preferedSet;
         this.admissibleSets = admissibleSet;
+        this.dictionnary = dictionnary;
     }
 
 
@@ -37,7 +40,7 @@ public class ArgumentationFramework {
      * <p>Empty constructor</p>
      */
     public ArgumentationFramework(){
-        this(new HashMap<>(), new HashMap<>(), new TreeSet<>(), new TreeSet<>());
+        this(new HashMap<>(), new HashMap<>(), new TreeSet<>(), new TreeSet<>(), new HashMap<>());
     }
 
     /**
@@ -46,6 +49,7 @@ public class ArgumentationFramework {
      */
     public void addArgument(Argument a){
         argumentSet.put(a.getIdentifier(), a);
+        dictionnary.put(a.getName(), a.getIdentifier());
     }
     /**
      * <p>
@@ -81,8 +85,8 @@ public class ArgumentationFramework {
      */
     public void addContradiction(String a, String b){
         int A, B;
-        A = Integer.parseInt(a.replaceAll("[\\D]",""));
-        B = Integer.parseInt(b.replaceAll("[\\D]",""));
+        A = dictionnary.get(a);
+        B = dictionnary.get(b);
         addContradiction(A,B);
     }
 
@@ -183,6 +187,9 @@ public class ArgumentationFramework {
         solutionSet.remove(a.getIdentifier());
     }
 
+    /**
+     * <p>Reads an argument from stdin, removes it from solution</p>
+     */
     public void removeSolution(){
         System.out.println("Enter the contradiction in the form A1");
         String answer;
@@ -239,6 +246,11 @@ public class ArgumentationFramework {
     }
 
 
+    /**
+     * <p>Checks if a set of arguments contains a contradiction</p>
+     * @param arguments
+     * @return true if the set doesn't contain any contradiction, false otherwise
+     */
     public boolean isContradicted(ArgumentationSet arguments){
         boolean ret = true;
         for (Argument argument : arguments){
@@ -250,6 +262,11 @@ public class ArgumentationFramework {
         return ret;
     }
 
+    /**
+     * <p>Checks if a set of arguments defends itself</p>
+     * @param arguments
+     * @return true if the set defends itself, false otherwise
+     */
     public boolean isDefended(ArgumentationSet arguments){
         boolean ret = true;
         int sum;
@@ -271,6 +288,9 @@ public class ArgumentationFramework {
         return ret;
     }
 
+    /**
+     * <p>Clears all the attributes (resets them)</p>
+     */
     public void clear(){
         solutionSet.clear();
         admissibleSets.clear();
@@ -279,9 +299,9 @@ public class ArgumentationFramework {
     }
 
     /**
-     *
+     *<p>Checks if a given set of argument is admissible or not</p>
      * @param arguments
-     * @return
+     * @return true if the set is admissible, false otherwise
      */
     public boolean isAdmissible(ArgumentationSet arguments){
         boolean existsDef = true, existsContradict = true;
@@ -295,7 +315,7 @@ public class ArgumentationFramework {
 
 
     /**
-     *
+     *<p>Constructs the set of (all) admissible sets of the AF</p>
      */
     //One could optimise this part. Though it is mandatory to test 2^n sets, we can infer that if a set {a,b} contradicts itself, then {a,b,c} also does
     //with that in our head, one could memoise (cache) the previously tested set that contains (at least) a contradiction, and test accordingly. This would reduce the
@@ -316,7 +336,7 @@ public class ArgumentationFramework {
     }
 
     /**
-     *
+     *<p>Constructs the set of (all) prefered sets of the AF</p>
      */
     public void constructPrefered(){
         preferedSets.clear();
@@ -332,6 +352,9 @@ public class ArgumentationFramework {
         }
     }
 
+    /**
+     * <p>Prints all the admissible sets</p>
+     */
     public void printAdmissible(){
         StringBuilder st = new StringBuilder();
         st.append("Admissible sets : \n");
@@ -344,6 +367,9 @@ public class ArgumentationFramework {
         System.out.println(st.toString());
     }
 
+    /**
+     * <p>Prints all the prefered sets</p>
+     */
     public void printPrefered(){
         StringBuilder st = new StringBuilder();
         st.append("Prefered sets : \n");
@@ -355,9 +381,9 @@ public class ArgumentationFramework {
     }
 
     /**
-     *
+     * <p>Checks whether two AF are the same or not</p>
      * @param o
-     * @return
+     * @return true if equals, false otherwise
      */
     @Override
     public boolean equals(Object o) {
@@ -369,8 +395,8 @@ public class ArgumentationFramework {
 
 
     /**
-     *
-     * @return
+     *<p>Computes the hash value of the AF</p>
+     * @return hash value of the AF
      */
     @Override
     public int hashCode() {

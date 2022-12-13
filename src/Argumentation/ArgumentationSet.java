@@ -37,6 +37,10 @@ public class ArgumentationSet extends TreeSet<Argument> implements Comparable<Ar
         return hash;
     }
 
+    /**
+     * <p>toString() method (quite classic)</p>
+     * @return the string representing the set of Arguments
+     */
     @Override
     public String toString(){
         StringBuilder st = new StringBuilder();
@@ -48,9 +52,9 @@ public class ArgumentationSet extends TreeSet<Argument> implements Comparable<Ar
     }
 
     /**
-     * <p></p>
+     * <p>Checks whether a set is strictly smaller subset of another set</p>
      * @param arguments
-     * @return
+     * @return true if the set is strictly smaller, false otherwise
      */
     public boolean isSmallerSubset(ArgumentationSet arguments){
         if (this.size() > arguments.size()) return false;
