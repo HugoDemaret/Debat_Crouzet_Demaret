@@ -15,7 +15,6 @@ import java.util.TreeSet;
 
 public class Core {
 
-    private String output;
     private ArgumentationFramework af;
     private ArgumentationSet solution;
     private int nbArg;
@@ -34,35 +33,51 @@ public class Core {
     public void printAdmissible(){
         Set<ArgumentationSet> argsets =  af.getAdmissibleSets();
         Random random = new Random();
-        int index = random.nextInt(argsets.size());
-        //Unfortunately we have to iterate through the set, since Java creators did not deem the get method as useful...
-        //It is quite disgusting!
-        int  i =0;
-        for (ArgumentationSet argset : argsets){
-            if (i==index) {
-                solution = argset;
-                break;
+        try {
+            int index = random.nextInt(argsets.size());
+            //Unfortunately we have to iterate through the set, since Java creators did not deem the get method as useful...
+            //It is quite disgusting!
+            int i = 0;
+            for (ArgumentationSet argset : argsets) {
+                if (i == index) {
+                    solution = argset;
+                    break;
+                }
+                i++;
             }
-            i++;
+            System.out.println(solution);
+        } catch (IllegalArgumentException e){
+            System.out.println("Error !");
+            e.printStackTrace();
         }
-        System.out.println(solution);
+    }
+
+    public void calculate(){
+        af.constructAdmissible();
+        af.constructPrefered();
     }
 
     public void printPrefered(){
         Set<ArgumentationSet> argsets =  af.getPreferedSets();
+        af.printPrefered();
         Random random = new Random();
-        int index = random.nextInt(argsets.size());
-        //Unfortunately we have to iterate through the set, since Java creators did not deem the get method as useful...
-        //It is quite disgusting!
-        int  i =0;
-        for (ArgumentationSet argset : argsets){
-            if (i==index) {
-                solution = argset;
-                break;
+        try {
+            int index = random.nextInt(argsets.size());
+            //Unfortunately we have to iterate through the set, since Java creators did not deem the get method as useful...
+            //It is quite disgusting!
+            int i = 0;
+            for (ArgumentationSet argset : argsets) {
+                if (i == index) {
+                    solution = argset;
+                    break;
+                }
+                i++;
             }
-            i++;
+            System.out.println(solution);
+        } catch (IllegalArgumentException e){
+            System.out.println("Error !");
+            e.printStackTrace();
         }
-        System.out.println(solution);
     }
 
 
@@ -70,8 +85,8 @@ public class Core {
         ConfigManager configManager = ConfigManager.getInstance();
         FileWriter file;
         try {
-            file = new FileWriter(configManager.getFileIn());
-            file.write(output);
+            file = new FileWriter(configManager.getFileOut());
+            file.write(solution.toString());
             file.close();
             System.out.println("Success!");
         } catch (IOException e) {

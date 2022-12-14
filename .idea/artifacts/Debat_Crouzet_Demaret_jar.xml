@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Debat_Crouzet_Demaret:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Debat_Crouzet_Demaret_jar</output-path>
+    <root id="archive" name="Debat_Crouzet_Demaret.jar">
+      <element id="module-output" name="Debat_Crouzet_Demaret" />
+    </root>
+  </artifact>
+</component>

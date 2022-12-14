@@ -44,9 +44,12 @@ public class ArgumentationSet extends TreeSet<Argument> implements Comparable<Ar
     @Override
     public String toString(){
         StringBuilder st = new StringBuilder();
+        int i = 1;
         for (Argument arg : this){
             st.append(arg.toString());
-            st.append(",");
+            if(i<this.size())
+                st.append(",");
+            i++;
         }
         return st.toString();
     }

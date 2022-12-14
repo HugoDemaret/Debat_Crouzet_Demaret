@@ -8,7 +8,7 @@ import java.util.Locale;
 public class ConfigManager {
     private boolean debug; //if set to true, then enters debug mode
     private boolean mode; //if set to true, then enters manual mode
-    private static final String path = "../../config/configuration.conf";
+    private static final String path = "configuration.conf";
     private String fileIn;
     private String fileOut;
 
@@ -90,7 +90,9 @@ public class ConfigManager {
      * @return true if String contains "true", false otherwise
      */
     public boolean parseString(String string){
-       return string.toLowerCase().contains("true");
+        if (string != null)
+            return string.toLowerCase().contains("true");
+        return false;
     }
 
 
