@@ -9,9 +9,11 @@ public class ConfigManager {
     private boolean debug; //if set to true, then enters debug mode
     private boolean mode; //if set to true, then enters manual mode
     private static final String path = "../../config/configuration.conf";
+    private String fileIn;
+    private String fileOut;
 
 
-    public static ConfigManager configManager = new ConfigManager();
+    private static ConfigManager configManager = new ConfigManager();
 
     /**
      * <p>Only one instance of this, initializes the values to true by default (in case of failure)</p>
@@ -25,8 +27,8 @@ public class ConfigManager {
      * <p>Gets the instance of this</p>
      * @return this
      */
-    public ConfigManager getInstance(){
-        return this;
+    public static ConfigManager getInstance(){
+        return configManager;
     }
 
     /**
@@ -43,6 +45,27 @@ public class ConfigManager {
      */
     public void setMode(boolean mode){
         this.mode = mode;
+    }
+
+
+    public void setIn(String string){
+        fileIn = string;
+    }
+
+    public void setOut(String string){
+        fileOut =string;
+    }
+
+    public static String getPath() {
+        return path;
+    }
+
+    public String getFileIn() {
+        return fileIn;
+    }
+
+    public String getFileOut() {
+        return fileOut;
     }
 
     /**
