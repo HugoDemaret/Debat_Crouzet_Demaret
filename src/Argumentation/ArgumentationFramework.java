@@ -169,7 +169,13 @@ public class ArgumentationFramework {
         return ret;
     }
 
+    public Set<ArgumentationSet> getAdmissibleSets() {
+        return admissibleSets;
+    }
 
+    public Set<ArgumentationSet> getPreferedSets() {
+        return preferedSets;
+    }
 
     /**
      * <p>Adds a proposed solution to the solution set</p>

@@ -5,6 +5,7 @@ package UserInput;
 
 import Argumentation.*;
 import FileManager.ConfigManager;
+import FileManager.Core;
 import FileManager.InputOutput;
 
 
@@ -89,8 +90,50 @@ public class Shell {
 
             InputReader.scanner.close();
         } else {
-            InputOutput inputOutput = InputOutput.getInstance();
-
+            Core core = Core.getInstance();
+            boolean ret = true;
+            String answer;
+            while (ret) {
+                System.out.println("1 : Search for an admissible solution");
+                System.out.println("2 : Search for a prefered solution");
+                System.out.println("3 : Save the solution");
+                System.out.println("5 : Print all admissible solutions");
+                System.out.println("6 : Print all prefered solutions");
+                System.out.println("7 : Save all solutions");
+                System.out.println("4 | quit | q : quit");
+                answer = InputReader.scanner.nextLine();
+                boolean res;
+                switch (answer.toLowerCase()) {
+                    case "1":
+                        core.printAdmissible();
+                        break;
+                    case "2":
+                        core.printPrefered();
+                        break;
+                    case "3":
+                        core.writeToOutput();
+                        break;
+                    case "5":
+                        core.printAllAdmissible();
+                        break;
+                    case "6":
+                        core.printAllPrefered();
+                        break;
+                    case "7":
+                        core.saveAllSolutions();
+                        break;
+                    case "4":
+                    case "q":
+                    case "quit":
+                        ret = !ret;
+                        res = af.verifySolution(true);
+                        System.out.println("Resultat : " + res);
+                        break;
+                    default:
+                        System.out.println("Error : wrong input!");
+                        break;
+                }
+            }
         }
     }
 
