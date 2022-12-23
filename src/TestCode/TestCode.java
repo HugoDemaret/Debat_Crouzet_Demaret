@@ -5,7 +5,14 @@ import Argumentation.ArgumentationFramework;
 import Argumentation.ArgumentationSet;
 import UserInput.*;
 
+/**
+ * <p>Testclass</p>
+ */
 public class TestCode {
+    /**
+     * The main entry point for the TestCode
+     * @param args the arguments from the command line
+     */
     public static void main(String[] args){
         //Shell.shell();
         ArgumentationFramework af = new ArgumentationFramework();

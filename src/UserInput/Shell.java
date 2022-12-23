@@ -8,9 +8,14 @@ import FileManager.ConfigManager;
 import FileManager.Core;
 
 
-
+/**
+ * <p>The shell class</p>
+ */
 public class Shell {
 
+    /**
+     * <p>The shell</p>
+     */
     public static void shell() {
 
         ConfigManager configManager = ConfigManager.getInstance();
@@ -87,14 +92,15 @@ public class Shell {
                 }
             }
 
-
-            InputReader.scanner.close();
         } else {
             Core core = Core.getInstance();
             boolean ret = true;
             String answer;
+            core.readFromInput();
+            core.calculate();
             while (ret) {
-                core.calculate();
+
+                //core.printall();
                 System.out.println("1 : Search for an admissible solution");
                 System.out.println("2 : Search for a prefered solution");
                 System.out.println("3 : Save the solution");
@@ -123,6 +129,7 @@ public class Shell {
                 }
             }
         }
+
     }
 
 }

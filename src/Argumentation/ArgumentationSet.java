@@ -11,12 +11,30 @@ import java.util.TreeSet;
  */
 public class ArgumentationSet extends TreeSet<Argument> implements Comparable<ArgumentationSet>{
 
-
+    /**
+     * <p>The hash value</p>
+     */
     private int hash;
 
     /**
+     * <p>This is disgusting but necessary for testing purposes</p>
+     * @param index the index to get
+     * @return the argument at the given index
+     */
+    @Deprecated
+    public Argument getArgument(int index){
+        int i = 0;
+        for (Argument arg : this){
+            if (i==index)
+                return arg;
+            i++;
+        }
+        return null;
+    }
+
+    /**
      * <p>Constructor given a hashvalue</p>
-     * @param hash
+     * @param hash the hash value
      */
     public ArgumentationSet(int hash){
         this.hash = hash;
@@ -56,7 +74,7 @@ public class ArgumentationSet extends TreeSet<Argument> implements Comparable<Ar
 
     /**
      * <p>Checks whether a set is strictly smaller subset of another set</p>
-     * @param arguments
+     * @param arguments the argumentset to compare
      * @return true if the set is strictly smaller, false otherwise
      */
     public boolean isSmallerSubset(ArgumentationSet arguments){
@@ -67,8 +85,8 @@ public class ArgumentationSet extends TreeSet<Argument> implements Comparable<Ar
 
     /**
      * <p>Adds an argument to ArgumentSet. Increments the hash by the argument's identifier</p>
-     * @param argument
-     * @return
+     * @param argument the argument to add to the set
+     * @return true if added
      */
     @Override
     public boolean add(Argument argument) {

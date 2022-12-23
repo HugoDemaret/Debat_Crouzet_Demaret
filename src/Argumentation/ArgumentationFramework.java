@@ -6,25 +6,45 @@ import UserInput.InputReader;
 
 import java.util.*;
 
+/**
+ * <p>Class the represent an argumentation framework</p>
+ */
 public class ArgumentationFramework {
+    /**
+     * The set of arguments
+     */
     private Map<Integer, Argument> argumentSet;
+    /**
+     * the set of potential solutions
+     */
     private Map<Integer,Argument> solutionSet;
-    private Set<ArgumentationSet> admissibleSets;
-    private Set<ArgumentationSet> preferedSets;
+    /**
+     * The set of admissible sets
+     */
+    private Map<Integer,ArgumentationSet> admissibleSets;
+    /**
+     * The set of prefered sets
+     */
+    private Map<Integer,ArgumentationSet> preferedSets;
+    /**
+     * The dictionnary of name:id of the arguments
+     */
     private Map<String, Integer> dictionnary; //name of the argument to its identifier
 
 
-
     /**
-     * <p>Constructor</p>
-     * @param arguments
-     * @param solutions
+     *
+     * @param arguments the arguments
+     * @param solutions the solutions set
+     * @param preferedSet the preferedSets
+     * @param admissibleSet the admissibleSets
+     * @param dictionnary the dictionnary (for the name:id)
      */
     public ArgumentationFramework(
             Map<Integer,Argument> arguments,
             Map<Integer,Argument> solutions,
-            Set<ArgumentationSet> preferedSet,
-            Set<ArgumentationSet> admissibleSet,
+            Map<Integer,ArgumentationSet> preferedSet,
+            Map<Integer,ArgumentationSet> admissibleSet,
             Map<String,Integer> dictionnary
     ) {
         this.argumentSet = arguments;
@@ -40,12 +60,12 @@ public class ArgumentationFramework {
      * <p>Empty constructor</p>
      */
     public ArgumentationFramework(){
-        this(new HashMap<>(), new HashMap<>(), new TreeSet<>(), new TreeSet<>(), new HashMap<>());
+        this(new HashMap<>(), new HashMap<>(), new TreeMap<>(), new TreeMap<>(), new HashMap<>());
     }
 
     /**
      *
-     * @param a
+     * @param a Argument to add to the AF
      */
     public void addArgument(Argument a){
         argumentSet.put(a.getIdentifier(), a);
@@ -85,9 +105,15 @@ public class ArgumentationFramework {
      */
     public void addContradiction(String a, String b){
         int A, B;
-        A = dictionnary.get(a);
-        B = dictionnary.get(b);
-        addContradiction(A,B);
+        if (dictionnary.containsKey(a) && dictionnary.containsKey(b)){
+            A = dictionnary.get(a);
+            B = dictionnary.get(b);
+            addContradiction(A,B);
+        } else {
+            System.out.println("One of the argument has not been defined yet !");
+            System.out.println("Quitting gracefully :) (By sending the OS an error, still)");
+            System.exit(-1);
+        }
     }
 
     /**
@@ -119,6 +145,7 @@ public class ArgumentationFramework {
      * <p>This method verifies if a proposed solution contains contradictions</p>
      * NOTE TO SELF : CAN BE OPTIMIZED WITH DFS/BFS
      * @return true if no contradiction exists, false otherwise
+     * @param mode what mode the proble is int 'DEPRECATED'
      */
     public boolean existsContradiction(boolean mode){
         boolean ret = true;
@@ -141,6 +168,7 @@ public class ArgumentationFramework {
      * <p>This method verifies if a defense relation exists for every attacked argument in the proposed solution</p>
      * NOTE TO SELF : can be optimized with a BFS/DFS
      * @return true if a defense exists, false otherwise
+     * @param mode what mode the proble is int 'DEPRECATED'
      */
     public boolean existsDefense(boolean mode){
         boolean ret = true;
@@ -169,17 +197,25 @@ public class ArgumentationFramework {
         return ret;
     }
 
-    public Set<ArgumentationSet> getAdmissibleSets() {
+    /**
+     * <p>Gets the admissible sets</p>
+     * @return a map of the admissible sets
+     */
+    public Map<Integer,ArgumentationSet> getAdmissibleSets() {
         return admissibleSets;
     }
 
-    public Set<ArgumentationSet> getPreferedSets() {
+    /**
+     * <p>Gets the prefered sets</p>
+     * @return a map of the prefered sets
+     */
+    public Map<Integer,ArgumentationSet> getPreferedSets() {
         return preferedSets;
     }
 
     /**
      * <p>Adds a proposed solution to the solution set</p>
-     * @param a
+     * @param a argument to add to solution
      */
     public void addSolution(Argument a){
         solutionSet.put(a.getIdentifier(),a);
@@ -187,7 +223,7 @@ public class ArgumentationFramework {
 
     /**
      * <p>Removes a given argument from the user proposed solution</p>
-     * @param a
+     * @param a argument to remove from solution
      */
     public void removeSolution(Argument a){
         solutionSet.remove(a.getIdentifier());
@@ -242,6 +278,7 @@ public class ArgumentationFramework {
     /**
      * <p>This method verifies if a proposed solution is admissible or not</p>
      * @return true if it is admissible, false otherwise
+     * @param mode what mode the proble is int 'DEPRECATED'
      */
     public boolean verifySolution(boolean mode){
        boolean existsDef = true, existsContradict = true;
@@ -254,7 +291,7 @@ public class ArgumentationFramework {
 
     /**
      * <p>Checks if a set of arguments contains a contradiction</p>
-     * @param arguments
+     * @param arguments the arguments set to check
      * @return true if the set doesn't contain any contradiction, false otherwise
      */
     public boolean isContradicted(ArgumentationSet arguments){
@@ -270,7 +307,7 @@ public class ArgumentationFramework {
 
     /**
      * <p>Checks if a set of arguments defends itself</p>
-     * @param arguments
+     * @param arguments the argument set to check
      * @return true if the set defends itself, false otherwise
      */
     public boolean isDefended(ArgumentationSet arguments){
@@ -306,7 +343,7 @@ public class ArgumentationFramework {
 
     /**
      *<p>Checks if a given set of argument is admissible or not</p>
-     * @param arguments
+     * @param arguments the argument set to check
      * @return true if the set is admissible, false otherwise
      */
     public boolean isAdmissible(ArgumentationSet arguments){
@@ -330,14 +367,14 @@ public class ArgumentationFramework {
         admissibleSets.clear();
         List<Argument> list = new ArrayList<Argument>(argumentSet.values());
         int n = list.size();
-        preferedSets.add(new ArgumentationSet());
+        preferedSets.put(0,new ArgumentationSet());
         for (int i = 0; i< (1<<n); ++i){
             ArgumentationSet arguments = new ArgumentationSet();
             for (int j = 0; j<n;++j){
                 if (((i>>j) &1)==1) arguments.add(list.get(j));
             }
             if (isAdmissible(arguments))
-                admissibleSets.add(arguments);
+                admissibleSets.put(i,arguments);
         }
     }
 
@@ -346,14 +383,18 @@ public class ArgumentationFramework {
      */
     public void constructPrefered(){
         preferedSets.clear();
-        for (ArgumentationSet subSet : admissibleSets){
+        int i = 1;
+        for (ArgumentationSet subSet : admissibleSets.values()){
             boolean isSubSet = true;
             if (!subSet.isEmpty()) {
-                for (ArgumentationSet argSet : admissibleSets) {
+                for (ArgumentationSet argSet : admissibleSets.values()) {
                     if (subSet.isSmallerSubset(argSet))
                         isSubSet = false;
                 }
-                if (isSubSet) preferedSets.add(subSet);
+                if (isSubSet) {
+                    preferedSets.put(i,subSet);
+                    i++;
+                }
             }
         }
     }
@@ -365,7 +406,7 @@ public class ArgumentationFramework {
         StringBuilder st = new StringBuilder();
         st.append("Admissible sets : \n");
 
-        for (ArgumentationSet argset : admissibleSets){
+        for (ArgumentationSet argset : admissibleSets.values()){
             st.append(argset.toString());
             st.append("\n");
         }
@@ -379,7 +420,7 @@ public class ArgumentationFramework {
     public void printPrefered(){
         StringBuilder st = new StringBuilder();
         st.append("Prefered sets : \n");
-        for (ArgumentationSet argset : preferedSets){
+        for (ArgumentationSet argset : preferedSets.values()){
             st.append(argset.toString());
             st.append("\n");
         }
@@ -388,7 +429,7 @@ public class ArgumentationFramework {
 
     /**
      * <p>Checks whether two AF are the same or not</p>
-     * @param o
+     * @param o the AF to compare
      * @return true if equals, false otherwise
      */
     @Override

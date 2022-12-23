@@ -5,14 +5,35 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Locale;
 
+/**
+ * <p>The configuration manager class</p>
+ */
 public class ConfigManager {
+    /**
+     * <p>debug value</p>
+     */
     private boolean debug; //if set to true, then enters debug mode
+    /**
+     * <p>mode value</p>
+     */
     private boolean mode; //if set to true, then enters manual mode
-    private static final String path = "configuration.conf";
+    /**
+     * <p>mode value</p>
+     */
+    private static final String path = "./configuration.conf";
+    /**
+     * <p>input file</p>
+     */
     private String fileIn;
+    /**
+     * <p>output file</p>
+     */
     private String fileOut;
 
 
+    /**
+     * <p>Singleton</p>
+     */
     private static ConfigManager configManager = new ConfigManager();
 
     /**
@@ -33,7 +54,7 @@ public class ConfigManager {
 
     /**
      * <p>Setter for debug's value</p>
-     * @param debug
+     * @param debug the debug value
      */
     public void setDebug(boolean debug){
         this.debug = debug;
@@ -41,29 +62,48 @@ public class ConfigManager {
 
     /**
      * <p>Setter for mode's value</p>
-     * @param mode
+     * @param mode the mode value
      */
     public void setMode(boolean mode){
         this.mode = mode;
     }
 
 
+    /**
+     * <p>Sets the in file</p>
+     * @param string input file
+     */
     public void setIn(String string){
         fileIn = string;
     }
 
+    /**
+     * <p>Sets the out file</p>
+     * @param string the string for the output file
+     */
     public void setOut(String string){
         fileOut =string;
     }
 
+    /**
+     * <p>Gets the path value</p>
+     * @return the path value
+     */
     public static String getPath() {
         return path;
     }
 
+    /**
+     * <p>Gets the path for input file</p>
+     * @return the path
+     */
     public String getFileIn() {
         return fileIn;
     }
-
+    /**
+     * <p>Gets the path for output file</p>
+     * @return the path
+     */
     public String getFileOut() {
         return fileOut;
     }
@@ -86,7 +126,7 @@ public class ConfigManager {
 
     /**
      * <p>Parses the string (naively) to see if it contains "true"</p>
-     * @param debugLine
+     * @param string the string to parse
      * @return true if String contains "true", false otherwise
      */
     public boolean parseString(String string){
@@ -98,7 +138,7 @@ public class ConfigManager {
 
     /**
      * <p>Initializes the value in this by reading the configuration file</p>
-     * @throws IOException
+     * @throws IOException input output exception
      */
     public void initConfig() throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
